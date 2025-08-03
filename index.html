@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QA CoLab</title>
-    <meta name="description"
-        content="Peer learning platform for Quality Assurance professionals. Collaborate. Learn. Grow.">
-
+    <meta name="description" content="Become a Quality Engineer through peer learning. Collaborate. Learn. Grow.">
     <!-- Favicon -->
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.a{fill:%238b5cf6}.b{fill:%23f87171}.c{fill:%2306b6d4}</style></defs><rect class='a' x='30' y='10' width='40' height='40' rx='4' transform='rotate(45 50 30)'/><rect class='b' x='10' y='30' width='40' height='40' rx='4' transform='rotate(45 30 50)'/><rect class='c' x='50' y='50' width='40' height='40' rx='4' transform='rotate(45 70 70)'/></svg>">
-
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         :root {
@@ -36,6 +38,8 @@
             line-height: 1.4;
             overflow-x: hidden;
             position: relative;
+            width: 100%;
+            max-width: 100vw;
         }
 
         /* Code background pattern */
@@ -46,7 +50,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background:
+            background: 
                 radial-gradient(circle at 25% 25%, #1a1a2e 0%, transparent 50%),
                 radial-gradient(circle at 75% 75%, #16213e 0%, transparent 50%),
                 linear-gradient(45deg, transparent 40%, rgba(52, 152, 219, 0.03) 50%, transparent 60%);
@@ -160,23 +164,28 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
             position: relative;
         }
 
         .hero-content {
             max-width: 800px;
+            padding: 0 1rem;
             animation: fadeInUp 0.8s ease-out;
         }
 
         .hero-title {
-            font-size: clamp(3rem, 8vw, 6rem);
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
             font-weight: 900;
             letter-spacing: -0.02em;
             margin-bottom: 1rem;
             color: var(--primary);
             transition: all 0.3s ease;
             cursor: default;
+            word-break: keep-all;
+            overflow-wrap: normal;
+            text-align: center;
+            width: 100%;
         }
 
         .hero-title:hover {
@@ -258,16 +267,20 @@
 
         /* Stats Section */
         .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
             margin-top: 4rem;
             padding: 0 2rem;
+            flex-wrap: nowrap;
         }
 
         .stat {
             text-align: center;
-            padding: 2rem 1rem;
+            padding: 1.5rem 0.8rem;
+            flex: 1;
+            max-width: 180px;
         }
 
         .stat-number {
@@ -412,7 +425,6 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -423,7 +435,6 @@
             0% {
                 transform: translateY(0px) rotate(-5deg);
             }
-
             100% {
                 transform: translateY(-100px) rotate(-5deg);
             }
@@ -452,13 +463,8 @@
         }
 
         @keyframes loading {
-            0% {
-                left: -100%;
-            }
-
-            100% {
-                left: 100%;
-            }
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         /* Responsive */
@@ -466,37 +472,62 @@
             .header {
                 padding: 1rem;
             }
-
+            
+            .hero {
+                padding: 0 1rem;
+            }
+            
+            .hero-content {
+                padding: 0 0.5rem;
+            }
+            
+            .hero-title {
+                font-size: clamp(2.2rem, 6.5vw, 4.5rem);
+            }
+            
             .nav-right {
                 gap: 1rem;
             }
-
+            
             .check-in-btn {
                 padding: 0.6rem 1rem;
                 font-size: 0.8rem;
             }
-
+            
             .access-form {
                 flex-direction: column;
                 max-width: 100%;
             }
-
+            
             .access-btn {
                 min-width: auto;
                 padding: 0.9rem 1.2rem;
                 font-size: 0.9rem;
             }
-
+            
             .stats {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.2rem;
+                padding: 0 1rem;
             }
-
+            
+            .stat {
+                padding: 1rem 0.4rem;
+                max-width: 140px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
             .features-grid {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-
+            
             .social-links {
                 gap: 1.5rem;
             }
@@ -504,15 +535,48 @@
 
         /* Extra small screens - adjust button text */
         @media (max-width: 480px) {
+            .hero {
+                padding: 0 1rem;
+            }
+            
+            .hero-content {
+                padding: 0 0.5rem;
+            }
+            
+            .hero-title {
+                font-size: clamp(2rem, 6vw, 4rem);
+                letter-spacing: -0.01em;
+                margin-bottom: 0.8rem;
+            }
+            
+            .stats {
+                gap: 0.8rem;
+                padding: 0 0.5rem;
+            }
+            
+            .stat {
+                padding: 0.8rem 0.2rem;
+                max-width: 100px;
+            }
+            
+            .stat-number {
+                font-size: 1.6rem;  
+            }
+            
+            .stat-label {
+                font-size: 0.65rem;
+                line-height: 1.1;
+            }
+            
             .access-form {
                 gap: 0.8rem;
             }
-
+            
             .access-btn {
                 padding: 0.8rem 1rem;
                 font-size: 0.85rem;
             }
-
+            
             .email-input {
                 padding: 0.8rem 1rem;
                 font-size: 0.95rem;
@@ -520,7 +584,6 @@
         }
     </style>
 </head>
-
 <body>
     <!-- Header -->
     <header class="header">
@@ -542,11 +605,11 @@
         <div class="hero-content">
             <h1 class="hero-title">QA CoLab</h1>
             <p class="hero-subtitle" data-text="slogan">Collaborate. Learn. Grow.</p>
-
+            
             <div class="cta-section" id="access">
                 <div class="access-form">
-                    <input type="email" class="email-input" placeholder="Your email"
-                        data-placeholder="email-placeholder" id="emailInput" required>
+                    <input type="email" class="email-input" placeholder="Your email" data-placeholder="email-placeholder" id="emailInput"
+                        required>
                     <button class="access-btn" onclick="requestAccess()" data-text="request-access">
                         Request Early Access
                     </button>
@@ -567,6 +630,10 @@
                     <span class="stat-label" data-text="peer-learning">Peer Learning</span>
                 </div>
                 <div class="stat fade-in">
+                    <span class="stat-number">FREE</span>
+                    <span class="stat-label" data-text="free-tier">Mentoring</span>
+                    </div>
+                    <div class="stat fade-in">
                     <span class="stat-number">∞</span>
                     <span class="stat-label" data-text="growth">Growth Potential</span>
                 </div>
@@ -577,28 +644,27 @@
     <!-- Features -->
     <section class="features">
         <div class="features-container">
-            <h2 class="features-title" data-text="features-title">The Future of QA Learning</h2>
-
+            <h2 class="features-title" data-text="features-title">Become a Quality Engineer</h2>
             <div class="features-grid">
                 <div class="feature fade-in">
                     <span class="feature-icon">👥</span>
                     <h3 class="feature-title" data-text="feature1-title">Peer Learning</h3>
-                    <p class="feature-description" data-text="feature1-desc">Learn from industry professionals. Share
-                        knowledge. Build together.</p>
+                    <p class="feature-description" data-text="feature1-desc">Share experiences. Improve your skills. Build quality together.
+                    </p>
                 </div>
-
+                
                 <div class="feature fade-in">
                     <span class="feature-icon">🎯</span>
                     <h3 class="feature-title" data-text="feature2-title">Hands-On Practice</h3>
-                    <p class="feature-description" data-text="feature2-desc">Real projects. Real challenges. Real
+                    <p class="feature-description" data-text="feature2-desc">Tackle real projects. Overcome challenges. Develop valuable
                         skills.</p>
                 </div>
-
+                
                 <div class="feature fade-in">
                     <span class="feature-icon">🌍</span>
                     <h3 class="feature-title" data-text="feature3-title">Global Community</h3>
-                    <p class="feature-description" data-text="feature3-desc">Connect with QA professionals worldwide.
-                        From 🇵🇹 to the world.</p>
+                    <p class="feature-description" data-text="feature3-desc">Connect with other professionals. Share experiences. Let's grow
+                        to the world.</p>
                 </div>
             </div>
         </div>
@@ -613,8 +679,8 @@
                 <a href="#" class="social-link" title="Twitter">🐦</a>
                 <a href="mailto:hello@qacolab.com" class="social-link" title="Email">📧</a>
             </div>
-
-            <p class="footer-text" data-text="footer-text">Building the future of QA education</p>
+            
+            <p class="footer-text" data-text="footer-text">Challenge. Learn. Evolve.</p>
             <p class="location">Porto, Portugal → Mundo</p>
         </div>
     </footer>
@@ -631,6 +697,7 @@
                 'launch': 'Outubro 2025',
                 'peer-learning': 'Peer Learning',
                 'growth': 'Potencial de Crescimento',
+                'free-tier': 'Mentoria',
                 'features-title': 'Torna-te Quality Engineer.',
                 'feature1-title': 'Peer Learning',
                 'feature1-desc': 'Partilha experiências. Melhora as tuas skills. Constrói qualidade em conjunto.',
@@ -646,11 +713,12 @@
                 'slogan': 'Collaborate. Learn. Grow.',
                 'early-access': 'Early Access',
                 'email-placeholder': 'Your email',
-                'request-access': window.innerWidth <= 480 ? 'Request Access' : 'Request Early Access',
-                'success-message': '✓ You’re on the list! We’ll be in touch.',
-                'launch': 'October 2025',
+                'request-access': 'Request Early Access',
+                'success-message': '✓ You\'re on the list! We\'ll be in touch.',
+                'launch': 'October, 2025',
                 'peer-learning': 'Peer Learning',
                 'growth': 'Growth Potential',
+                'free-tier': 'Mentoring',
                 'features-title': 'Become a Quality Engineer',
                 'feature1-title': 'Peer Learning',
                 'feature1-desc': 'Share experiences. Improve your skills. Build quality together.',
@@ -660,8 +728,8 @@
                 'feature3-desc': 'Connect with other professionals. Share experiences. Let’s grow to the world.',
                 'footer-text': 'Challenge. Learn. Evolve.',
                 'alert-email': 'Please enter your email',
-                'alert-valid': 'Please enter a valid email'
-            },
+                'alert-valid': 'Please enter a valid email address'
+            }
         };
 
         // Current language (default: English)
@@ -671,12 +739,12 @@
         function setLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
-
+            
             // Update button text based on screen size for Portuguese
             if (lang === 'pt') {
                 translations.pt['request-access'] = window.innerWidth <= 480 ? 'Solicitar Acesso' : 'Solicitar Acesso Antecipado';
             }
-
+            
             // Update active language button
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -684,7 +752,7 @@
                     btn.classList.add('active');
                 }
             });
-
+            
             // Update all text elements
             document.querySelectorAll('[data-text]').forEach(element => {
                 const key = element.getAttribute('data-text');
@@ -692,19 +760,19 @@
                     element.textContent = translations[lang][key];
                 }
             });
-
+            
             // Update placeholder
             const emailInput = document.getElementById('emailInput');
             emailInput.placeholder = translations[lang]['email-placeholder'];
-
+            
             // Update meta description
             const metaDesc = document.querySelector('meta[name="description"]');
             if (lang === 'pt') {
-                metaDesc.content = 'Plataforma de peer learning para profissionais de Quality Assurance. Collaborate. Learn. Grow.';
+                metaDesc.content = 'Torna-te Quality Engi de peer learning. Collaborate. Learn. Grow.';
             } else {
-                metaDesc.content = 'Peer learning platform for Quality Assurance professionals. Collaborate. Learn. Grow.';
+                metaDesc.content = 'Become a Quality Engineer through peer learning. Collaborate. Learn. Grow.';
             }
-
+            
             // Store language preference
             localStorage.setItem('qacolab-language', lang);
         }
@@ -720,29 +788,29 @@
             const email = document.getElementById('emailInput').value.trim();
             const btn = document.querySelector('.access-btn');
             const successMsg = document.getElementById('successMessage');
-
+            
             if (!email) {
                 alert(translations[currentLang]['alert-email']);
                 return;
             }
-
+            
             if (!isValidEmail(email)) {
                 alert(translations[currentLang]['alert-valid']);
                 return;
             }
-
+            
             // Loading state
             btn.textContent = currentLang === 'pt' ? 'Processando...' : 'Processing...';
             btn.disabled = true;
             btn.classList.add('loading');
-
+            
             // Simulate API call
             setTimeout(() => {
                 // Success state
                 btn.textContent = currentLang === 'pt' ? '✓ Solicitado' : '✓ Requested';
                 btn.classList.remove('loading');
                 successMsg.style.display = 'block';
-
+                
                 // Store email (in production, send to backend)
                 localStorage.setItem('qacolab-early-access', JSON.stringify({
                     email: email,
@@ -750,7 +818,7 @@
                     timestamp: new Date().toISOString(),
                     source: 'landing-page'
                 }));
-
+                
                 // Reset after delay
                 setTimeout(() => {
                     btn.textContent = translations[currentLang]['request-access'];
@@ -758,21 +826,21 @@
                     document.getElementById('emailInput').value = '';
                     successMsg.style.display = 'none';
                 }, 3000);
-
+                
             }, 1500);
         }
 
         // Initialize language on page load
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Check for stored language preference
             const savedLang = localStorage.getItem('qacolab-language');
             if (savedLang && savedLang === 'pt') {
                 setLanguage('pt');
             }
             // EN is already default, so no need to set if not saved or saved as 'en'
-
+            
             // Update button text on resize for Portuguese
-            window.addEventListener('resize', function () {
+            window.addEventListener('resize', function() {
                 if (currentLang === 'pt') {
                     const btn = document.querySelector('.access-btn');
                     if (btn) {
@@ -784,7 +852,7 @@
         });
 
         // Enter key support
-        document.getElementById('emailInput').addEventListener('keypress', function (e) {
+        document.getElementById('emailInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 requestAccess();
             }
@@ -825,5 +893,4 @@
         });
     </script>
 </body>
-
 </html>
