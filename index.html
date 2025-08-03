@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA CoLab</title>
+    <meta name="description"
+        content="Peer learning platform for Quality Assurance professionals. Collaborate. Learn. Grow.">
+
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.a{fill:%238b5cf6}.b{fill:%23f87171}.c{fill:%2306b6d4}</style></defs><rect class='a' x='30' y='10' width='40' height='40' rx='4' transform='rotate(45 50 30)'/><rect class='b' x='10' y='30' width='40' height='40' rx='4' transform='rotate(45 30 50)'/><rect class='c' x='50' y='50' width='40' height='40' rx='4' transform='rotate(45 70 70)'/></svg>">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ffffff;
+            --secondary: #0a0a0a;
+            --accent: #00ff88;
+            --gray: #888888;
+            --light-gray: #1a1a1a;
+            --success: #00ff88;
+            --border: #333333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: var(--secondary);
+            line-height: 1.4;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Code background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 25% 25%, #1a1a2e 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #16213e 0%, transparent 50%),
+                linear-gradient(45deg, transparent 40%, rgba(52, 152, 219, 0.03) 50%, transparent 60%);
+            z-index: -2;
+        }
+
+        /* Animated code lines */
+        body::after {
+            content: 'function testQuality() {\n  return peer.learn().collaborate().grow();\n}\n\nconst qaColab = {\n  mission: "Transform QA Education",\n  method: "Peer Learning",\n  community: "Global"\n};\n\ntest("should build amazing QA skills", async () => {\n  const result = await qaColab.join();\n  expect(result).toBe("Success");\n});';
+            position: fixed;
+            top: 10%;
+            left: -20%;
+            width: 140%;
+            height: 80%;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(100, 255, 100, 0.03);
+            white-space: pre;
+            z-index: -1;
+            animation: codeScroll 20s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .language-toggle {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid transparent;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            color: var(--gray);
+        }
+
+        .lang-btn.active {
+            color: var(--accent);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .lang-btn:hover {
+            color: var(--accent);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .check-in-btn {
+            background: var(--accent);
+            color: var(--secondary);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .check-in-btn:hover {
+            background: #00cc6a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .hero-title:hover {
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            transform: scale(1.02);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 300;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            letter-spacing: 0.02em;
+        }
+
+        .cta-section {
+            margin-bottom: 4rem;
+        }
+
+        .access-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: var(--light-gray);
+            color: var(--primary);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .email-input::placeholder {
+            color: var(--gray);
+        }
+
+        .email-input:focus {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.1);
+            background: #222222;
+        }
+
+        .access-btn {
+            padding: 1rem 1.5rem;
+            background: var(--accent);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .access-btn:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .access-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            padding: 0 2rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat:hover .stat-number {
+            transform: scale(1.1);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 8rem 2rem;
+            background: var(--light-gray);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: var(--primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            background: var(--secondary);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: #000000;
+            color: var(--primary);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .social-link:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+            filter: drop-shadow(0 4px 8px rgba(0, 255, 136, 0.3));
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-bottom: 1rem;
+        }
+
+        .location {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Success State */
+        .success-message {
+            background: var(--accent);
+            color: var(--secondary);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes codeScroll {
+            0% {
+                transform: translateY(0px) rotate(-5deg);
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(-5deg);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Loading state */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .nav-right {
+                gap: 1rem;
+            }
+
+            .check-in-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .access-form {
+                flex-direction: column;
+                max-width: 100%;
+            }
+
+            .access-btn {
+                min-width: auto;
+                padding: 0.9rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .social-links {
+                gap: 1.5rem;
+            }
+        }
+
+        /* Extra small screens - adjust button text */
+        @media (max-width: 480px) {
+            .access-form {
+                gap: 0.8rem;
+            }
+
+            .access-btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .email-input {
+                padding: 0.8rem 1rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">QA CoLab</a>
+            <div class="nav-right">
+                <div class="language-toggle">
+                    <button class="lang-btn" onclick="setLanguage('pt')" data-lang="pt">PT</button>
+                    <span style="color: var(--gray); opacity: 0.5;">|</span>
+                    <button class="lang-btn active" onclick="setLanguage('en')" data-lang="en">EN</button>
+                </div>
+                <a href="#access" class="check-in-btn" data-text="early-access">Early Access</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">QA CoLab</h1>
+            <p class="hero-subtitle" data-text="slogan">Collaborate. Learn. Grow.</p>
+
+            <div class="cta-section" id="access">
+                <div class="access-form">
+                    <input type="email" class="email-input" placeholder="Your email"
+                        data-placeholder="email-placeholder" id="emailInput" required>
+                    <button class="access-btn" onclick="requestAccess()" data-text="request-access">
+                        Request Early Access
+                    </button>
+                    <div class="success-message" id="successMessage" data-text="success-message">
+                        ✓ You're on the list! We'll be in touch.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat fade-in">
+                    <span class="stat-number">OUT</span>
+                    <span class="stat-label" data-text="launch">October 2025</span>
+                </div>
+                <div class="stat fade-in">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label" data-text="peer-learning">Peer Learning</span>
+                </div>
+                <div class="stat fade-in">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label" data-text="growth">Growth Potential</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="features-container">
+            <h2 class="features-title" data-text="features-title">The Future of QA Learning</h2>
+
+            <div class="features-grid">
+                <div class="feature fade-in">
+                    <span class="feature-icon">👥</span>
+                    <h3 class="feature-title" data-text="feature1-title">Peer Learning</h3>
+                    <p class="feature-description" data-text="feature1-desc">Learn from industry professionals. Share
+                        knowledge. Build together.</p>
+                </div>
+
+                <div class="feature fade-in">
+                    <span class="feature-icon">🎯</span>
+                    <h3 class="feature-title" data-text="feature2-title">Hands-On Practice</h3>
+                    <p class="feature-description" data-text="feature2-desc">Real projects. Real challenges. Real
+                        skills.</p>
+                </div>
+
+                <div class="feature fade-in">
+                    <span class="feature-icon">🌍</span>
+                    <h3 class="feature-title" data-text="feature3-title">Global Community</h3>
+                    <p class="feature-description" data-text="feature3-desc">Connect with QA professionals worldwide.
+                        From Porto to the world.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#" class="social-link" title="LinkedIn">💼</a>
+                <a href="#" class="social-link" title="Discord">💬</a>
+                <a href="#" class="social-link" title="Twitter">🐦</a>
+                <a href="mailto:hello@qacolab.com" class="social-link" title="Email">📧</a>
+            </div>
+
+            <p class="footer-text" data-text="footer-text">Building the future of QA education</p>
+            <p class="location">Porto, Portugal → Mundo</p>
+        </div>
+    </footer>
+
+    <script>
+        // Language translations
+        const translations = {
+            pt: {
+                'slogan': 'Collaborate. Learn. Grow.',
+                'early-access': 'Acesso Antecipado',
+                'email-placeholder': 'O teu email',
+                'request-access': window.innerWidth <= 480 ? 'Solicitar Acesso' : 'Solicitar Acesso Antecipado',
+                'success-message': '✓ Estás na lista! Entraremos em contacto.',
+                'launch': 'Outubro 2025',
+                'peer-learning': 'Peer Learning',
+                'growth': 'Potencial de Crescimento',
+                'features-title': 'Torna-te Quality Engineer.',
+                'feature1-title': 'Peer Learning',
+                'feature1-desc': 'Partilha experiências. Melhora as tuas skills. Constrói qualidade em conjunto.',
+                'feature2-title': 'Prática Hands-On',
+                'feature2-desc': 'Enfrenta projetos reais. Supera desafios. Desenvolve competências valiosas.',
+                'feature3-title': 'Comunidade Global',
+                'feature3-desc': 'Liga-te a outros profissionais. Partilha experiências. Cresçamos para o mundo.',
+                'footer-text': 'Desafia. Aprende. Evolui.',
+                'alert-email': 'Por favor, insere o teu email',
+                'alert-valid': 'Por favor, insere um email válido'
+            },
+            en: {
+                'slogan': 'Collaborate. Learn. Grow.',
+                'early-access': 'Early Access',
+                'email-placeholder': 'Your email',
+                'request-access': window.innerWidth <= 480 ? 'Request Access' : 'Request Early Access',
+                'success-message': '✓ You’re on the list! We’ll be in touch.',
+                'launch': 'October 2025',
+                'peer-learning': 'Peer Learning',
+                'growth': 'Growth Potential',
+                'features-title': 'Become a Quality Engineer',
+                'feature1-title': 'Peer Learning',
+                'feature1-desc': 'Share experiences. Improve your skills. Build quality together.',
+                'feature2-title': 'Hands-On Practice',
+                'feature2-desc': 'Tackle real projects. Overcome challenges. Develop valuable skills.',
+                'feature3-title': 'Global Community',
+                'feature3-desc': 'Connect with other professionals. Share experiences. Let’s grow to the world.',
+                'footer-text': 'Challenge. Learn. Evolve.',
+                'alert-email': 'Please enter your email',
+                'alert-valid': 'Please enter a valid email'
+            },
+        };
+
+        // Current language (default: English)
+        let currentLang = 'en';
+
+        // Set language function
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            // Update button text based on screen size for Portuguese
+            if (lang === 'pt') {
+                translations.pt['request-access'] = window.innerWidth <= 480 ? 'Solicitar Acesso' : 'Solicitar Acesso Antecipado';
+            }
+
+            // Update active language button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update all text elements
+            document.querySelectorAll('[data-text]').forEach(element => {
+                const key = element.getAttribute('data-text');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Update placeholder
+            const emailInput = document.getElementById('emailInput');
+            emailInput.placeholder = translations[lang]['email-placeholder'];
+
+            // Update meta description
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (lang === 'pt') {
+                metaDesc.content = 'Plataforma de peer learning para profissionais de Quality Assurance. Collaborate. Learn. Grow.';
+            } else {
+                metaDesc.content = 'Peer learning platform for Quality Assurance professionals. Collaborate. Learn. Grow.';
+            }
+
+            // Store language preference
+            localStorage.setItem('qacolab-language', lang);
+        }
+
+        // Email validation
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Request access function
+        function requestAccess() {
+            const email = document.getElementById('emailInput').value.trim();
+            const btn = document.querySelector('.access-btn');
+            const successMsg = document.getElementById('successMessage');
+
+            if (!email) {
+                alert(translations[currentLang]['alert-email']);
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                alert(translations[currentLang]['alert-valid']);
+                return;
+            }
+
+            // Loading state
+            btn.textContent = currentLang === 'pt' ? 'Processando...' : 'Processing...';
+            btn.disabled = true;
+            btn.classList.add('loading');
+
+            // Simulate API call
+            setTimeout(() => {
+                // Success state
+                btn.textContent = currentLang === 'pt' ? '✓ Solicitado' : '✓ Requested';
+                btn.classList.remove('loading');
+                successMsg.style.display = 'block';
+
+                // Store email (in production, send to backend)
+                localStorage.setItem('qacolab-early-access', JSON.stringify({
+                    email: email,
+                    language: currentLang,
+                    timestamp: new Date().toISOString(),
+                    source: 'landing-page'
+                }));
+
+                // Reset after delay
+                setTimeout(() => {
+                    btn.textContent = translations[currentLang]['request-access'];
+                    btn.disabled = false;
+                    document.getElementById('emailInput').value = '';
+                    successMsg.style.display = 'none';
+                }, 3000);
+
+            }, 1500);
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check for stored language preference
+            const savedLang = localStorage.getItem('qacolab-language');
+            if (savedLang && savedLang === 'pt') {
+                setLanguage('pt');
+            }
+            // EN is already default, so no need to set if not saved or saved as 'en'
+
+            // Update button text on resize for Portuguese
+            window.addEventListener('resize', function () {
+                if (currentLang === 'pt') {
+                    const btn = document.querySelector('.access-btn');
+                    if (btn) {
+                        translations.pt['request-access'] = window.innerWidth <= 480 ? 'Solicitar Acesso' : 'Solicitar Acesso Antecipado';
+                        btn.textContent = translations.pt['request-access'];
+                    }
+                }
+            });
+        });
+
+        // Enter key support
+        document.getElementById('emailInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                requestAccess();
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = '0.2s';
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>
